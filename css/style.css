@@ -72,6 +72,11 @@ main#app {
   margin-bottom: 0.75rem;
 }
 
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .form-grid {
   display: grid;
   gap: 0.65rem;

@@ -37,7 +37,18 @@ async function cadastrarCliente(payload) {
   return parseResponse(response, 'Erro ao cadastrar cliente.');
 }
 
+async function chamarProximo() {
+  const response = await fetch(`${BASE_URL}/fila/chamar`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  return parseResponse(response, 'Erro ao chamar próximo da fila.');
+}
+
 window.AtendimentoApi = {
   getFila,
-  cadastrarCliente
+  cadastrarCliente,
+  chamarProximo
 };

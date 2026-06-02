@@ -9,7 +9,7 @@
       throw new Error('Elemento principal da aplicacao nao foi encontrado.');
     }
 
-    if (!api?.cadastrarCliente || !api?.getFila) {
+    if (!api?.cadastrarCliente || !api?.getFila || !api?.chamarProximo) {
       throw new Error('API de atendimento nao foi carregada corretamente.');
     }
 
@@ -39,9 +39,29 @@
       }
     }
 
-    filaTable = createFilaTable(() => {
-      carregarFila();
-    });
+    async function chamarProximoDaFila() {
+      filaTable.setLoading(true);
+      cadastroForm.setFeedback('');
+
+      try {
+        const response = await api.chamarProximo();
+        cadastroForm.setFeedback(response?.message || 'Proximo cliente chamado com sucesso.', 'success');
+        await carregarFila();
+      } catch (error) {
+        cadastroForm.setFeedback(error.message || 'Erro ao chamar proximo cliente.', 'error');
+      } finally {
+        filaTable.setLoading(false);
+      }
+    }
+
+    filaTable = createFilaTable(
+      () => {
+        carregarFila();
+      },
+      () => {
+        chamarProximoDaFila();
+      }
+    );
 
     cadastroForm.form.addEventListener('submit', async (event) => {
       event.preventDefault();

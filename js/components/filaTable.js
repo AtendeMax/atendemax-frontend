@@ -1,11 +1,14 @@
 (function () {
-  function createFilaTable(onRefresh) {
+  function createFilaTable(onRefresh, onChamarProximo) {
     const container = document.createElement('article');
     container.className = 'panel card';
     container.innerHTML = `
       <div class="panel-header">
         <h2>Fila de espera</h2>
-        <button type="button" id="refresh-btn" class="btn-secondary">Atualizar</button>
+        <div class="actions">
+          <button type="button" id="refresh-btn" class="btn-secondary">Atualizar</button>
+          <button type="button" id="chamar-proximo-btn" class="btn-secondary">Chamar Proximo</button>
+        </div>
       </div>
       <p id="fila-meta" class="fila-meta">Total de clientes: 0</p>
       <div class="table-wrapper">
@@ -29,6 +32,7 @@
     `;
 
     const refreshBtn = container.querySelector('#refresh-btn');
+    const chamarProximoBtn = container.querySelector('#chamar-proximo-btn');
     const filaMeta = container.querySelector('#fila-meta');
     const filaBody = container.querySelector('#fila-body');
 
@@ -36,8 +40,15 @@
       onRefresh();
     });
 
+    chamarProximoBtn.addEventListener('click', () => {
+      if (typeof onChamarProximo === 'function') {
+        onChamarProximo();
+      }
+    });
+
     function setLoading(isLoading) {
       refreshBtn.disabled = isLoading;
+      chamarProximoBtn.disabled = isLoading;
     }
 
     function render(fila) {
