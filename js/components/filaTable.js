@@ -58,9 +58,6 @@
       filaBody.innerHTML = clientes
         .map(
           (cliente) => {
-            const isPreferencial = cliente.tipo === 'preferencial';
-            const tipoLabel = isPreferencial ? `⭐ ${cliente.tipo}` : cliente.tipo;
-
             const status = cliente.status ? cliente.status.toLowerCase() : 'aguardando';
 
             return `
@@ -69,8 +66,8 @@
               <td>${cliente.id}</td>
               <td>${cliente.nome}</td>
               <td>
-                <span class="tag ${isPreferencial ? 'preferencial' : 'normal'}">
-                  ${tipoLabel}
+                <span class="tag ${cliente.tipo === 'preferencial' ? 'preferencial' : 'normal'}">
+                  ${cliente.tipo}
                 </span>
               </td>
               <td>

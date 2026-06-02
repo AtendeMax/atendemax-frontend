@@ -191,6 +191,11 @@ td {
   background-color: #fef3c7;
 }
 
+.tag.preferencial::before {
+  content: "⭐";
+  margin-right: 0.3rem;
+}
+
 .tag.aguardando {
   color: #374151;
   background-color: #e5e7eb;
