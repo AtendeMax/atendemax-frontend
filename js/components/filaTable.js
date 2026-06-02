@@ -16,11 +16,12 @@
               <th>ID</th>
               <th>Nome</th>
               <th>Tipo</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody id="fila-body">
             <tr>
-              <td colspan="4" class="empty-row">Carregando fila...</td>
+              <td colspan="5" class="empty-row">Carregando fila...</td>
             </tr>
           </tbody>
         </table>
@@ -48,7 +49,7 @@
       if (clientes.length === 0) {
         filaBody.innerHTML = `
           <tr>
-            <td colspan="4" class="empty-row">Nenhum cliente na fila.</td>
+            <td colspan="5" class="empty-row">Nenhum cliente na fila.</td>
           </tr>
         `;
         return;
@@ -56,18 +57,28 @@
 
       filaBody.innerHTML = clientes
         .map(
-          (cliente) => `
+          (cliente) => {
+            const isPreferencial = cliente.tipo === 'preferencial';
+            const tipoLabel = isPreferencial ? `⭐ ${cliente.tipo}` : cliente.tipo;
+
+            const status = cliente.status ? cliente.status.toLowerCase() : 'aguardando';
+
+            return `
             <tr>
               <td>${cliente.posicao}</td>
               <td>${cliente.id}</td>
               <td>${cliente.nome}</td>
               <td>
-                <span class="tag ${cliente.tipo === 'preferencial' ? 'preferencial' : 'normal'}">
-                  ${cliente.tipo}
+                <span class="tag ${isPreferencial ? 'preferencial' : 'normal'}">
+                  ${tipoLabel}
                 </span>
               </td>
+              <td>
+                <span class="tag ${status}">${status}</span>
+              </td>
             </tr>
-          `
+          `;
+          }
         )
         .join('');
     }
@@ -75,7 +86,7 @@
     function renderError() {
       filaBody.innerHTML = `
         <tr>
-          <td colspan="4" class="empty-row">Nao foi possivel carregar a fila.</td>
+          <td colspan="5" class="empty-row">Nao foi possivel carregar a fila.</td>
         </tr>
       `;
     }

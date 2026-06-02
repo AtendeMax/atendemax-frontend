@@ -191,6 +191,21 @@ td {
   background-color: #fef3c7;
 }
 
+.tag.aguardando {
+  color: #374151;
+  background-color: #e5e7eb;
+  border: 1px solid #cbd5e1;
+}
+
+.tag.aguardando::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: #6b7280;
+  margin-right: 0.4rem;
+}
+
 @media (max-width: 900px) {
   .layout-grid {
     grid-template-columns: 1fr;
