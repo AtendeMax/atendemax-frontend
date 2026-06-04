@@ -47,8 +47,19 @@ async function chamarProximo() {
   return parseResponse(response, 'Erro ao chamar próximo da fila.');
 }
 
+async function cancelarCliente(clienteId) {
+  const response = await fetch(`${BASE_URL}/clientes/${clienteId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  return parseResponse(response, 'Erro ao cancelar cliente.');
+}
+
 window.AtendimentoApi = {
   getFila,
   cadastrarCliente,
-  chamarProximo
+  chamarProximo,
+  cancelarCliente
 };

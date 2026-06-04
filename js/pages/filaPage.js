@@ -54,12 +54,30 @@
       }
     }
 
+    async function cancelarClienteDaFila(clienteId) {
+      filaTable.setLoading(true);
+      cadastroForm.setFeedback('');
+
+      try {
+        const response = await api.cancelarCliente(clienteId);
+        cadastroForm.setFeedback(response?.message || 'Cliente cancelado com sucesso.', 'success');
+        await carregarFila();
+      } catch (error) {
+        cadastroForm.setFeedback(error.message || 'Erro ao cancelar cliente.', 'error');
+      } finally {
+        filaTable.setLoading(false);
+      }
+    }
+
     filaTable = createFilaTable(
       () => {
         carregarFila();
       },
       () => {
         chamarProximoDaFila();
+      },
+      (clienteId) => {
+        cancelarClienteDaFila(clienteId)
       }
     );
 

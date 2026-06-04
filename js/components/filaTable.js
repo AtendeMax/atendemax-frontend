@@ -1,5 +1,5 @@
 (function () {
-  function createFilaTable(onRefresh, onChamarProximo) {
+  function createFilaTable(onRefresh, onChamarProximo, onCancelarCliente) {
     const container = document.createElement('article');
     container.className = 'panel card';
     container.innerHTML = `
@@ -20,11 +20,12 @@
               <th>Nome</th>
               <th>Tipo</th>
               <th>Status</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody id="fila-body">
             <tr>
-              <td colspan="5" class="empty-row">Carregando fila...</td>
+              <td colspan="6" class="empty-row">Carregando fila...</td>
             </tr>
           </tbody>
         </table>
@@ -46,6 +47,27 @@
       }
     });
 
+    filaBody.addEventListener('click', (event) => {
+      const cancelButton = event.target.closest('.js-cancelar-cliente');
+      if (!cancelButton) {
+        return;
+      }
+
+      const clientName = cancelButton.dataset.clientName;
+
+      let confirmation = confirm(`Deseja cancelar o atendimento de ${clientName}?`);
+      
+      if (!confirmation) {
+        return;
+      }
+
+      const clientId = cancelButton.dataset.clientId;
+
+      if (typeof onCancelarCliente === 'function') {
+        onCancelarCliente(clientId);
+      }
+    });
+
     function setLoading(isLoading) {
       refreshBtn.disabled = isLoading;
       chamarProximoBtn.disabled = isLoading;
@@ -60,7 +82,7 @@
       if (clientes.length === 0) {
         filaBody.innerHTML = `
           <tr>
-            <td colspan="5" class="empty-row">Nenhum cliente na fila.</td>
+            <td colspan="6" class="empty-row">Nenhum cliente na fila.</td>
           </tr>
         `;
         return;
@@ -84,6 +106,16 @@
               <td>
                 <span class="tag ${status}">${status}</span>
               </td>
+              <td>
+                <button
+                  type="button"
+                  class="btn-cancelar js-cancelar-cliente"
+                  data-client-id="${cliente.id}"
+                  data-client-name="${cliente.nome}"
+                >
+                  Cancelar
+                </button>
+              </td>
             </tr>
           `;
           }
@@ -94,7 +126,7 @@
     function renderError() {
       filaBody.innerHTML = `
         <tr>
-          <td colspan="5" class="empty-row">Nao foi possivel carregar a fila.</td>
+          <td colspan="6" class="empty-row">Nao foi possivel carregar a fila.</td>
         </tr>
       `;
     }
