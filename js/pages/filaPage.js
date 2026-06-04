@@ -4,6 +4,7 @@
     const api = options?.api;
     const createCadastroForm = window.AtendeMaxComponents?.createCadastroForm;
     const createFilaTable = window.AtendeMaxComponents?.createFilaTable;
+    const createHistoricoTable = window.AtendeMaxComponents?.createHistoricoTable;
 
     if (!mountElement) {
       throw new Error('Elemento principal da aplicacao nao foi encontrado.');
@@ -13,7 +14,7 @@
       throw new Error('API de atendimento nao foi carregada corretamente.');
     }
 
-    if (!createCadastroForm || !createFilaTable) {
+    if (!createCadastroForm || !createFilaTable || !createHistoricoTable) {
       throw new Error('Componentes da tela nao foram carregados corretamente.');
     }
 
@@ -24,6 +25,7 @@
     layout.setAttribute('aria-label', 'Cadastro e fila de espera');
 
     let filaTable;
+    let historicoTable;
     const cadastroForm = createCadastroForm();
 
     async function carregarFila() {
@@ -36,6 +38,19 @@
         cadastroForm.setFeedback(error.message || 'Erro ao buscar fila.', 'error');
       } finally {
         filaTable.setLoading(false);
+      }
+    }
+
+    async function carregarHistorico(filtros = '') {
+      historicoTable.setLoading(true);
+      try {
+        const historico = await api.getHistorico(filtros);
+        historicoTable.render(historico);
+      } catch (error) {
+        historicoTable.renderError();
+        cadastroForm.setFeedback(error.message || 'Erro ao buscar histórico.', 'error');
+      } finally {
+        historicoTable.setLoading(false);
       }
     }
 
@@ -99,6 +114,12 @@
       }
     );
 
+    historicoTable = createHistoricoTable(
+      (filtros) => {
+        carregarHistorico(filtros);
+      }
+    );
+
     cadastroForm.form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
@@ -122,6 +143,7 @@
         cadastroForm.setFeedback(response?.message || 'Cliente adicionado a fila com sucesso.', 'success');
         cadastroForm.reset();
         await carregarFila();
+        await carregarHistorico();
       } catch (error) {
         cadastroForm.setFeedback(error.message || 'Erro ao cadastrar cliente.', 'error');
       } finally {
@@ -131,9 +153,11 @@
 
     layout.appendChild(cadastroForm.element);
     layout.appendChild(filaTable.element);
+    layout.appendChild(historicoTable.element);
     mountElement.appendChild(layout);
 
     carregarFila();
+    carregarHistorico();
   }
 
   window.initFilaPage = initFilaPage;

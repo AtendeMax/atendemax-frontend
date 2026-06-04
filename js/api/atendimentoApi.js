@@ -67,10 +67,22 @@ async function concluirAtendimento(clienteId) {
   return parseResponse(response, 'Erro ao concluir atendimento.');
 }
 
+async function getHistorico(filtros = '') {
+  const query = typeof filtros === 'string' ? filtros : '';
+  const response = await fetch(`${BASE_URL}/historico${query}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  return parseResponse(response, 'Erro ao buscar histórico.');
+}
+
 window.AtendimentoApi = {
   getFila,
   cadastrarCliente,
   chamarProximo,
   cancelarCliente,
-  concluirAtendimento
+  concluirAtendimento,
+  getHistorico
 };

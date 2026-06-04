@@ -51,6 +51,10 @@ main#app {
   gap: 1rem;
 }
 
+.layout-grid .historico-full-width {
+  grid-column: 1 / -1;
+}
+
 .card {
   background-color: #fff;
   border: 1px solid #e5e7eb;
@@ -75,6 +79,48 @@ main#app {
 .actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.historico-filters {
+  display: flex;
+  /* justify-content: flex-end; */
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.filtro-group {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.filtro {
+  min-width: 180px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #111827;
+  font-size: 0.9rem;
+  padding: 0.5rem 2rem 0.5rem 0.7rem;
+  outline: none;
+  appearance: none;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filtro:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+}
+
+.filtro:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #f3f4f6;
 }
 
 .form-grid {
@@ -259,5 +305,18 @@ td {
 @media (max-width: 900px) {
   .layout-grid {
     grid-template-columns: 1fr;
+  }
+
+  .historico-filters {
+    justify-content: stretch;
+  }
+
+  .filtro-group {
+    width: 100%;
+  }
+
+  .filtro {
+    width: 100%;
+    min-width: 0;
   }
 }
