@@ -1,5 +1,5 @@
 const BASE_URL = 'http://127.0.0.1:8000';
-const ENABLE_GET_MOCK = true;
+const ENABLE_GET_MOCK = false;
 const mockApi = window.AtendimentoApiMock || {};
 
 async function parseResponse(response, fallbackMessage) {
