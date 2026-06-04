@@ -6,27 +6,23 @@
       <div class="panel-header">
         <h2>Histórico</h2>
         <div class="actions">
+          <label class="filtro-group" for="filtro-tipo">
+            <select id="filtro-tipo" class="filtro">
+              <option value="">Todos os tipos</option>
+              <option value="normal">Normal</option>
+              <option value="preferencial">Preferencial</option>
+            </select>
+          </label>
+          <label class="filtro-group" for="filtro-status">
+            <select id="filtro-status" class="filtro">
+              <option value="">Todos os status</option>
+              <option value="cancelado">Cancelado</option>
+              <option value="concluido">Concluído</option>
+            </select>
+          </label>
           <button type="button" id="refresh-btn" class="btn-secondary">Atualizar</button>
           <button type="button" id="clear-filters-btn" class="btn-secondary">Limpar Filtros</button>
         </div>
-      </div>
-      <div class="historico-filters" aria-label="Filtros do histórico">
-        <label class="filtro-group" for="filtro-tipo">
-          <span>Tipo</span>
-          <select id="filtro-tipo" class="filtro">
-            <option value="">Todos os tipos</option>
-            <option value="normal">Normal</option>
-            <option value="preferencial">Preferencial</option>
-          </select>
-        </label>
-        <label class="filtro-group" for="filtro-status">
-          <span>Status</span>
-          <select id="filtro-status" class="filtro">
-            <option value="">Todos os status</option>
-            <option value="cancelado">Cancelado</option>
-            <option value="concluido">Concluído</option>
-          </select>
-        </label>
       </div>
       <p id="fila-meta" class="fila-meta">Total: 0</p>
       <div class="table-wrapper">

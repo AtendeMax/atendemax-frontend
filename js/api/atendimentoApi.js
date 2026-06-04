@@ -1,4 +1,6 @@
 const BASE_URL = 'http://127.0.0.1:8000';
+const ENABLE_GET_MOCK = true;
+const mockApi = window.AtendimentoApiMock || {};
 
 async function parseResponse(response, fallbackMessage) {
   if (response.ok) {
@@ -21,6 +23,14 @@ async function parseResponse(response, fallbackMessage) {
 }
 
 async function getFila() {
+  if (ENABLE_GET_MOCK) {
+    const mockFila = mockApi.fila || { total: 0, clientes: [] };
+    return {
+      ...mockFila,
+      clientes: [...(mockFila.clientes || [])]
+    };
+  }
+
   const response = await fetch(`${BASE_URL}/fila`);
   return parseResponse(response, 'Erro ao buscar fila de atendimento.');
 }
@@ -68,6 +78,20 @@ async function concluirAtendimento(clienteId) {
 }
 
 async function getHistorico(filtros = '') {
+  if (ENABLE_GET_MOCK) {
+    const mockHistorico = mockApi.historico || { total: 0, clientes: [] };
+    const applyFilters =
+      typeof mockApi.applyHistoricoFilters === 'function'
+        ? mockApi.applyHistoricoFilters
+        : (clientes) => clientes;
+
+    const clientesFiltrados = applyFilters(mockHistorico.clientes || [], filtros);
+    return {
+      total: clientesFiltrados.length,
+      clientes: clientesFiltrados
+    };
+  }
+
   const query = typeof filtros === 'string' ? filtros : '';
   const response = await fetch(`${BASE_URL}/historico${query}`, {
     method: 'GET',
