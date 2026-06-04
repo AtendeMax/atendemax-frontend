@@ -293,13 +293,52 @@ td {
   border: 1px solid #cbd5e1;
 }
 
-.tag.aguardando::before {
+.tag.em-atendimento,
+.tag.em_atendimento {
+  color: #1e3a8a;
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+.tag.concluido {
+  color: #14532d;
+  background-color: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+.tag.cancelado {
+  color: #991b1b;
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.tag.aguardando::before,
+.tag.em-atendimento::before,
+.tag.em_atendimento::before,
+.tag.concluido::before,
+.tag.cancelado::before {
   content: "";
   width: 0.45rem;
   height: 0.45rem;
-  border-radius: 50%;
-  background-color: #6b7280;
+  border-radius: 999px;
   margin-right: 0.4rem;
+}
+
+.tag.aguardando::before {
+  background-color: #638392;
+}
+
+.tag.em-atendimento::before,
+.tag.em_atendimento::before {
+  background-color: #2563eb;
+}
+
+.tag.concluido::before {
+  background-color: #16a34a;
+}
+
+.tag.cancelado::before {
+  background-color: #dc2626;
 }
 
 @media (max-width: 900px) {

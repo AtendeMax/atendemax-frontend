@@ -109,17 +109,16 @@
               <td>${cliente.id}</td>
               <td>${cliente.nome}</td>
               <td>
-                <span class="tag ${cliente.tipo === 'preferencial' ? 'preferencial' : 'normal'}">
+                <span class="tag ${cliente.tipo.toLowerCase()}">
                   ${cliente.tipo}
                 </span>
               </td>
               <td>
-                <span class="tag ${status}">${status}</span>
+                <span class="tag ${status}">${status === 'em_atendimento' ? 'Em Atendimento' : status}</span>
               </td>
               <td>
-                ${
-                  status === "em_atendimento" 
-                  ? `
+                ${status === "em_atendimento"
+                ? `
                     <button
                       type="button"
                       class="btn-concluir js-concluir-cliente"
@@ -128,7 +127,7 @@
                       Concluir
                     </button>
                   `
-                  : `
+                : `
                     <button
                       type="button"
                       class="btn-cancelar js-cancelar-cliente"
@@ -138,7 +137,7 @@
                       Cancelar
                     </button>
                   `
-                }
+              }
               </td>
             </tr>
           `;
