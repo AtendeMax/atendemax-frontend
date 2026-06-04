@@ -57,9 +57,20 @@ async function cancelarCliente(clienteId) {
   return parseResponse(response, 'Erro ao cancelar cliente.');
 }
 
+async function concluirAtendimento(clienteId) {
+  const response = await fetch(`${BASE_URL}/atendimentos/${clienteId}/concluir`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  return parseResponse(response, 'Erro ao concluir atendimento.');
+}
+
 window.AtendimentoApi = {
   getFila,
   cadastrarCliente,
   chamarProximo,
-  cancelarCliente
+  cancelarCliente,
+  concluirAtendimento
 };

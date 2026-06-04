@@ -1,5 +1,5 @@
 (function () {
-  function createFilaTable(onRefresh, onChamarProximo, onCancelarCliente) {
+  function createFilaTable(onRefresh, onChamarProximo, onCancelarCliente, onConcluirAtendimento) {
     const container = document.createElement('article');
     container.className = 'panel card';
     container.innerHTML = `
@@ -49,24 +49,34 @@
 
     filaBody.addEventListener('click', (event) => {
       const cancelButton = event.target.closest('.js-cancelar-cliente');
-      if (!cancelButton) {
-        return;
-      }
+      if (cancelButton) return cancelAction(cancelButton);
 
+      const concludeButton = event.target.closest('.js-concluir-cliente');
+      if (concludeButton) return concludedAction(concludeButton);
+
+      return;
+    });
+
+    function cancelAction(cancelButton) {
       const clientName = cancelButton.dataset.clientName;
 
       let confirmation = confirm(`Deseja cancelar o atendimento de ${clientName}?`);
-      
-      if (!confirmation) {
-        return;
-      }
+      if (!confirmation) return;
 
       const clientId = cancelButton.dataset.clientId;
 
       if (typeof onCancelarCliente === 'function') {
         onCancelarCliente(clientId);
       }
-    });
+    }
+
+    function concludedAction(concludeButton) {
+      const clientId = concludeButton.dataset.clientId;
+
+      if (typeof onConcluirAtendimento === 'function') {
+        onConcluirAtendimento(clientId);
+      }
+    }
 
     function setLoading(isLoading) {
       refreshBtn.disabled = isLoading;
@@ -107,14 +117,28 @@
                 <span class="tag ${status}">${status}</span>
               </td>
               <td>
-                <button
-                  type="button"
-                  class="btn-cancelar js-cancelar-cliente"
-                  data-client-id="${cliente.id}"
-                  data-client-name="${cliente.nome}"
-                >
-                  Cancelar
-                </button>
+                ${
+                  status === "em_atendimento" 
+                  ? `
+                    <button
+                      type="button"
+                      class="btn-concluir js-concluir-cliente"
+                      data-client-id="${cliente.id}"
+                    >
+                      Concluir
+                    </button>
+                  `
+                  : `
+                    <button
+                      type="button"
+                      class="btn-cancelar js-cancelar-cliente"
+                      data-client-id="${cliente.id}"
+                      data-client-name="${cliente.nome}"
+                    >
+                      Cancelar
+                    </button>
+                  `
+                }
               </td>
             </tr>
           `;
